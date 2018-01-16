@@ -5,11 +5,17 @@ module.exports.iniciaChat = function(application, req, res)
     req.assert('apelido','Nome ou apelido deve conter entre 3 e 15 caracteres').len(3,15)
 
     var erros = req.validationErrors();
-    console.log(erros)
     if(erros)
     {
         res.render('../app/view/index',{validacao:erros})
         return;
     }
+    console.log(dadosForm)
+    application.get('io').emit(
+        'msgParaCliente',
+        {
+            apelido: dadosForm.apelido, 
+            mensagem:'Acabou de entrar na sala de bate papo'
+        })
     res.render('../app/view/chat')
 }
